@@ -1,0 +1,6 @@
+node_modules
+/dialogs/dialog-id.json
+/config/bluemix.json
+
+.DS_Store
+npm-debug.log

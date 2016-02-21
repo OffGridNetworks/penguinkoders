@@ -1,0 +1,46 @@
+{
+  "name": "penguinkoders",
+  "version": "0.5.0",
+  "description": "A closed network and homework helper for under 13s",
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/offgridnetworks/penguinkoder.git"
+  },
+  "author": "The OffGrid Penguins (Koder HackSummit 2016)",
+  "contributors": [
+    {
+      "name": "Guy Barnard",
+      "email": "guycreate@users.noreply.github.com"
+    },
+    {
+      "name": "Alex Barnard, Age 11",
+      "email": "alexcreate@users.noreply.github.com"
+    },
+    {
+      "name": "William Barnard, Age 10",
+      "email": "willscreate@users.noreply.github.com"
+    },
+    {
+      "name": "Piers Barnard, Age 8",
+      "email": "pierscreate@users.noreply.github.com"
+    }
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "node server/index.js",
+    "postinstall": "node dialogs/install-dialogs.js"
+  },
+  "dependencies": {
+    "async": "^1.5.1",
+    "body-parser": "~1.14.1",
+    "csv-parse": "^1.0.1",
+    "errorhandler": "~1.4.1",
+    "express": "~4.13.3",
+    "request": "^2.69.0",
+    "sqlite3": "^3.1.1",
+    "watson-developer-cloud": "~1.0.6"
+  }
+}

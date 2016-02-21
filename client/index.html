@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>the penguin</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="css/style.css">
+<style>
+      #firechat-wrapper {
+        height: 475px;
+        max-width: 325px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        margin: 50px auto;
+        text-align: center;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 5px 25px #666;
+        -moz-box-shadow: 0 5px 25px #666;
+        box-shadow: 0 5px 25px #666;
+      }
+      #firechat-room-list {
+      line-height: 0.9; }
+        #firechat-user-list {
+      line-height: 0.9; }
+      
+      #firechat-room-list .highlight {
+    font-weight: 700;
+        }
+      a {
+          text-decoration: none;
+      }
+    </style>
+</head>
+<body>
+	<header class="_demo--heading">
+	<div class="_demo--container">
+		<a class="wordmark" href="http://github.com/offgridnetworks/penguinkoders">
+			<span class="wordmark--left">OffGrid</span>
+			<span class="wordmark--right">Penguins</span>
+		</a>
+		<nav class="heading-nav">
+			<a class="heading-nav--item" href="english.html">
+				English
+			</a>
+			<a class="heading-nav--item" href="math.html">
+				Math
+			</a>
+	        <a class="heading-nav--item" href="parents.html">
+				Parents
+			</a>
+		</nav>
+	</div>
+</header>
+	<div class="_demo--banner">
+	<div class="_demo--container">
+		<div class="banner--service-icon-container">
+			<img class="banner--service-icon" src="images/icons/dialog.svg" alt="Penguin Icon">
+		</div>
+		<div class="banner--service-info">
+			<h1 class="banner--service-title base--h1">
+				<img class="banner--service-icon_INLINE" src="images/icons/dialog.svg" alt="Penguin Icon">
+				Penguin Network
+			</h1>
+			<div class="banner--service-description">Penguin Network is a homework helper and closed community for the under 13s.</div>
+			<div class="banner--service-resource">
+				<span class="icon icon-link"></span>
+				<strong>Resources to help you judge this application:</strong>
+			</div>
+			<div class="banner--service-links">
+				<li class="base--li banner--service-link-item">
+					<a href="tech.html" class="base--a">Technology</a>
+				</li>
+				<li class="base--li banner--service-link-item">
+					<a href="team.html" class="base--a">Team</a>
+				</li>
+				<li class="base--li banner--service-link-item">
+					<a href="features.html" class="base--a">Features</a>
+				</li>
+				<li class="base--li banner--service-link-item">
+					<a href="https://github.com/offgridnetworks/penguin" class="base--a">Source code</a>
+				</li>
+			</div>
+		</div>
+	</div>
+</div>
+	<div class="_demo--container">
+	<article class="_demo--content base--article">
+		<div class="_content--dialog">
+			<div class="chat-window">
+				<div class="chat-box">
+					<div class="chat-box--pane">
+						<div class="chat-box--item_PENGUIN chat-box--item chat-box--item_HIDDEN">
+							<div class="chat-box--container">
+								<div class="img-container chat-box--avatar chat-box--avatar_PENGUIN">
+									<img src="images/icons/avatar-penguin.svg" class="chat-box--avatar-img">
+								</div>
+								<div class="chat-box--message">
+									<div class="chat-box--message-vertical">
+										<p class="chat-box--message-text base--p"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+                        <div class="chat-box--item_PEER chat-box--item chat-box--item_HIDDEN">
+							<div class="chat-box--container">
+								<div class="img-container chat-box--avatar chat-box--avatar_PEER">
+									<img src="images/icons/avatar-peer01.svg" class="chat-box--avatar-img">
+								</div>
+								<div class="chat-box--message">
+									<div class="chat-box--message-vertical">
+										<p class="chat-box--message-text base--p"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="chat-box--item_YOU chat-box--item chat-box--item_HIDDEN">
+							<div class="chat-box--container">
+								<div class="chat-box--message">
+									<div class="chat-box--message-vertical">
+										<p class="chat-box--message-text base--p"></p>
+									</div>
+								</div>
+								<div class="img-container chat-box--avatar chat-box--avatar_YOU">
+									<img src="images/icons/avatar-you.svg" class="chat-box--avatar-img">
+								</div>
+							</div>
+						</div>
+						<!-- adding extra space hack -->
+						<div style="height: 15px; visibility: hidden;"></div>
+						<div class="loader">
+							<div class="loader--fallback"><img src="images/loading.gif" width="50" alt=""></div>
+						</div>
+					</div>
+				</div>
+
+				<input type="text" placeholder="Type a message and hit enter" value="" autocomplete="off" class="chat-window--message-input base--text-input">
+                <div class = "hint">Include <b>penguin</b> as the first word of your message to address me</div>
+			</div>
+		</div>
+
+		<div class="_content--data">
+			<div class="tab-panels" role="tabpanel">
+				<ul class="tab-panels--tab-list" role="tablist">
+					<li class="tab-panels--tab-list-item base-li" role="presentation">
+						<a class="tab-panels--tab base--a active" href="#room-panel" aria-controls="text" role="tab">Rooms</a>
+					</li>
+					<li class="tab-panels--tab-list-item base-li" role="presentation">
+						<a class="tab-panels--tab base--a" href="#friends-panel" aria-controls="text" role="tab">Friends</a>
+					</li>
+                    <li class="tab-panels--tab-list-item base-li" role="presentation">
+						<a class="tab-panels--tab base--a" href="#profile-panel" aria-controls="text" role="tab">Profile</a>
+					</li>
+				</ul>
+				<div class="tab-panels--tab-content">
+					<div id="room-panel" class="tab-panels--tab-pane active" role="tab-panel">
+						<div class="base--textarea">
+                                <ul id='firechat-room-list'></ul>
+						</div>
+					</div>
+					<div id="friends-panel" class="tab-panels--tab-pane" role="tab-panel">
+						<div class="base--textarea">
+                                <ul id='firechat-user-list'></ul>
+                        </div>
+					</div>
+                    <div id="profile-panel" class="tab-panels--tab-pane" role="tab-panel">
+						<textarea class="base--textarea">The Hackathon rules require no social login, so this feature is not currently implemented.  In future, you would be able to change your id, avatar etc. here.
+                        </textarea>
+                        
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Property template -->
+		<div class="data--variable hidden">
+			<span class="data--variable-title"></span>
+			<span class="data--variable-value"></span>
+		</div>
+	</article>
+</div>
+<div class="penguin-band scene" id="penguin-footer-legal">
+  <div class="penguin-columns">
+    <div class="penguin-col-1-1">
+      <ol>
+        <li><a href="https://twitter.com/hack_summit" target="_blank">A Koder HackSummit Entry</a></li>
+        <li><a href="./privacy.html" target="_blank">Privacy Policy</a></li>
+        <li><a href ="https://github.com/offgridnetworks/penguinkoders" target="_blank">© 2016 OffGrid Penguins</li>
+      </ol>
+    </div>
+  </div>
+</div>
+  <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Firebase -->
+    <script src="https://cdn.firebase.com/js/client/2.0.2/firebase.js"></script>
+    <!-- Firechat -->
+    <script src="lib/shims.js"></script>
+    <script src="lib/underscore-1.7.0.min.js"></script>
+    <script src="lib/firechat.js"></script>
+    <!-- Penguin App -->
+   <script type="text/javascript" src="client.js"></script>
+   <script type="text/javascript" src="client-chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+    "url": "https://gateway.watsonplatform.net/dialog/api",
+    "username": "REPLACEWITHYOURWATSONGUID",
+    "password": "password",
+    "version": "v1"
+}
