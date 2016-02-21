@@ -27,19 +27,57 @@ var Language = function (credentials) {
     this.alchemy_language = watson.alchemy_language(this.credentials);
 };
 
-Language.prototype.lookup = function (req, res, next, url) {
-    console.log(url);
+Language.prototype.lookup = function (app, context, itemType, book, url) {
     var self = this;
     var params = { url: url, maxRetrieve: 50, sentiment: 1, outputMode: "json" };
     self.alchemy_language.entities(params, function (err, results) {
-        console.log("LANGUAGE " + err + results);
-        if (err) {
+         if (err) {
             console.log(err);
-            return next(err);
-        }
+           app.penguinchat.sendMessage("I had trouble: " + err.toString(), context.userid);
+        } else
+        {
+            var positives = [];
+            var negatives = [];
 
-        res.json(results);
+            if (results.entities && results.entities.length) {
+                var name;
+                for (var i = 0; i < results.entities.length; i++) {
+                    name = results.entities[i].text + "[" + results.entities[i].type + "]";
+                    if (self.check_duplicate_concept(positives, name) || (results.entities[i].sentiment.type != "positive") || positives.length == 3)
+                        continue;
+                    else {
+                        positives.push(name);
+                    }
+                }
+                for (var i = 0; i < results.entities.length; i++) {
+                     name = results.entities[i].text + "[" + results.entities[i].type + "]";
+                    if (self.check_duplicate_concept(negatives, name) || (results.entities[i].sentiment.type != "negative") || negatives.length == 3)
+                        continue;
+                    else {
+                        negatives.push(name);
+                    }
+                }
+            }
+	         
+            
+            app.penguinchat.sendMessage("I just read the entire text of " + book + ", thanks!  It is in the public domain so can download it too from <a href='" + url + "' target='_blank'>here</a>", context.userid); 
+
+            app.penguinchat.sendMessage("The " + itemType + " " + book + " is positive towards " + positives.join(", and "), context.userid);
+            app.penguinchat.sendMessage("The " + itemType + " " + book + " is negative towards " + negatives.join(", and "), context.userid); 
+            if (!book.startsWith('http'))
+              app.penguinhandler["language-insights"](context, "analyze-concepts", book);           
+        }
     });
 }  
+
+Language.prototype.check_duplicate_concept = function (unique_concept_array, concept) {
+
+        for (var i = 0; i < unique_concept_array.length; i++) {
+            if (unique_concept_array[i] == concept)
+                return true;
+        }
+
+        return false;
+    }
 
 module.exports = Language;

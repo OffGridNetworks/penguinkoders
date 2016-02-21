@@ -29,7 +29,7 @@
 'use strict';
 
 var async = require('async'),
-    credentials    = require('../config/bluemix.json').dialog,
+    credentials    = require('../config/credentials.json').dialog,
     fs = require('fs'),
     path = require('path'),
     request = require('request')

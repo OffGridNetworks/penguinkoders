@@ -44,18 +44,31 @@ var Dialog = function (app, credentials) {
             if (err)
                 return next(err);
             else
-                res.json({ dialog_id: dialog_id, conversation: results });
-        });
-    });
-
-    app.post('/dialog-profile', function (req, res, next) {
-        var params = extend({ dialog_id: dialog_id }, req.body);
-        dialog.getProfile(params, function (err, results) {
-            console.log(results);
-            if (err)
-                return next(err);
-            else
-                res.json(results);
+            {
+                      
+                var texts = results.response;
+                var response = texts.join('<br>');
+                   params.conversation_id = results.conversation_id;
+                   params.client_id = results.client_id;
+                app.penguinchat.sendMessage(response, params.userid);
+                dialog.getProfile(params, function (err, profResults) {
+                    if (err)
+                        return next(err);
+                    else
+                    {
+                      var profile = {};
+                       profResults["name_values"].forEach(function(item)
+                       {
+                           profile[item.name] = item.value;
+                       });
+                       
+                       if (profile.confirmed == "Yes" && app.penguinhandler[profile.plugin])
+                           app.penguinhandler[profile.plugin](params, profile.method, profile.data);                   
+                     
+                       res.json({ dialog_id: dialog_id, conversation: results, profile: profile });
+                    }                   
+                });
+            }
         });
     });
 };

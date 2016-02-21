@@ -6,15 +6,16 @@
                 <prompt selectionType="RANDOM">
                     <item>Hi, I'm the Penguin! I can help you with book reports</item>
                 </prompt>
-               <action varName="book" operator="SET_TO_BLANK"/>
-               <action varName="confirmed" operator="SET_TO_NO"/>
-                <goto ref="getUserInput_2442994"/>
+                <action varName="book" operator="SET_TO_BLANK" />
+                <action varName="confirmed" operator="SET_TO_NO" />
+                <goto ref="getUserInput_2442994" />
             </output>
             <output>
                 <getUserInput id="getUserInput_2442994">
-                    <search ref="folder_2442998"/>
+                    <search ref="folder_2442998" />
                     <default>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>I'm sorry I did not understand your question. All I can do right now is help you with a book report...</item>
                                 <item>I did not quite get that.</item>
@@ -29,48 +30,88 @@
         <folder label="Library">
             <folder label="Live Content" id="folder_2442998">
                 <input>
-                        <grammar>
-                            <item>Preliminaries</item>
-                            <item>$ what do you know</item>
-                            <item>$ what can you do</item>
-                            <item>$ what can I do</item>
-                            <item>$ what can you tell</item>
-                            <item>$ what kind of</item>
-                            <item>$ what else do you know</item>
-                            <item>$ what do you have information</item>
-                            <item>$ do you know</item>
-                             <item>$ do you have information</item>
-                            <item>$ can I</item>
-                            <item>$ Do you have *</item>
-                                <item>$ What * do you have</item>
-                           <item>$ Which * do you have</item>
-                            <item>$ What titles * do you have</item>
-                            <item>$ What do you know about</item>
-                        </grammar>
-                      <output>
-                            <prompt selectionType="RANDOM">
-                                <item>I have access to all the books in the Gutenburg collection.</item>
-                            </prompt>
-                        </output>
-              </input>
+                    <grammar>
+                        <item>Preliminaries</item>
+                        <item>$ what do you know</item>
+                        <item>$ what can you do</item>
+                        <item>$ what can I do</item>
+                        <item>$ what can you tell</item>
+                        <item>$ what kind of</item>
+                        <item>$ what else do you know</item>
+                        <item>$ what do you have information</item>
+                        <item>$ do you know</item>
+                        <item>$ do you have information</item>
+                        <item>$ can I</item>
+                        <item>$ Do you have *</item>
+                        <item>$ What * do you have</item>
+                        <item>$ Which * do you have</item>
+                        <item>$ What titles * do you have</item>
+                        <item>$ What do you know about</item>
+                    </grammar>
+                    <output>
+                        <action varName="confirmed" operator="SET_TO_NO" />
+                        <prompt selectionType="RANDOM">
+                            <item>I have access to all the books in the Gutenburg collection.</item>
+                        </prompt>
+                    </output>
+                </input>
+                  <input>
+                    <grammar>
+                        <item>$ look at the url (DYNAMIC_DATA)={data}</item>
+                     </grammar>
+                    <action varName="data" operator="SET_TO">{data.source}</action>
+                    <action varName="confirmed" operator="SET_TO_YES" />
+                    <action varName="plugin" operator="SET_TO">language-insights</action>
+                    <action varName="method" operator="SET_TO">analyze-url</action>
+                    <action varName="confirmed" operator="SET_TO_YES" />
+                    <output>
+                        <prompt selectionType="RANDOM">
+                            <item>Ok I'll take a look at {data}</item>
+                        </prompt>
+                    </output>
+                </input>
                 <input>
-                        <grammar>  
-                        <item>$ a book report on (DYNAMIC_DATA)={book}</item>
-                        <item>$ tell me about (DYNAMIC_DATA)={book}</item>
-                           <item>$ Tell me about (DYNAMIC_DATA)={book}</item>
-                        <item>$ What do you know about (DYNAMIC_DATA)={book}</item>
-                        <item>$ What the main themes in (DYNAMIC_DATA)={book}</item> 
-                        <item>I'd like to do a book report on (DYNAMIC_DATA)={book}</item>
-                         <item>Do you have (DYNAMIC_DATA)={book}</item>
-                         </grammar>
-                        <action varName="book" operator="SET_TO">{book.source}</action>
-                       <action varName="confirmed" operator="SET_TO_YES"/>
-                        <output>
-                               <prompt selectionType="RANDOM">
-                                <item>Ok checking my sources for {book}</item>
-                            </prompt>
-                       </output>
-                    </input>
+                    <grammar>
+                        <item>$ a book report on (DYNAMIC_DATA)={data}</item>
+                        <item>$ tell me about (DYNAMIC_DATA)={data}</item>
+                        <item>$ Tell me about (DYNAMIC_DATA)={data}</item>
+                        <item>$ What do you know about (DYNAMIC_DATA)={data}</item>
+                        <item>$ What the main themes in (DYNAMIC_DATA)={data}</item>
+                        <item>I'd like to do a book report on (DYNAMIC_DATA)={data}</item>
+                        <item>Do you have (DYNAMIC_DATA)={data}</item>
+                    </grammar>
+                    <action varName="data" operator="SET_TO">{data.source}</action>
+                    <action varName="confirmed" operator="SET_TO_YES" />
+                    <action varName="plugin" operator="SET_TO">language-insights</action>
+                    <action varName="method" operator="SET_TO">analyze-book</action>
+                    <action varName="confirmed" operator="SET_TO_YES" />
+                    <output>
+                        <prompt selectionType="RANDOM">
+                            <item>Ok checking my sources for {data}</item>
+                        </prompt>
+                    </output>
+                </input>
+                <input>
+                    <grammar>
+                        <item>$ a book report on (DYNAMIC_DATA)={data}</item>
+                        <item>$ tell me about (DYNAMIC_DATA)={data}</item>
+                        <item>$ Tell me about (DYNAMIC_DATA)={data}</item>
+                        <item>$ What do you know about (DYNAMIC_DATA)={data}</item>
+                        <item>$ What the main themes in (DYNAMIC_DATA)={data}</item>
+                        <item>I'd like to do a book report on (DYNAMIC_DATA)={data}</item>
+                        <item>Do you have (DYNAMIC_DATA)={data}</item>
+                    </grammar>
+                    <action varName="data" operator="SET_TO">{data.source}</action>
+                    <action varName="confirmed" operator="SET_TO_YES" />
+                    <action varName="plugin" operator="SET_TO">language-insights</action>
+                    <action varName="method" operator="SET_TO">analyze-book</action>
+                    <action varName="confirmed" operator="SET_TO_YES" />
+                    <output>
+                        <prompt selectionType="RANDOM">
+                            <item>Ok checking my sources for {data}</item>
+                        </prompt>
+                    </output>
+                </input>
                 <folder label="Greetings">
                     <input>
                         <grammar>
@@ -132,6 +173,7 @@
                             <item>$ hello my Penguin</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>Hello, how are you?</item>
                                 <item>Hi. How are you doing?</item>
@@ -241,6 +283,7 @@
                             <item>$ how you are feeling today</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt>
                                 <item>I'm really good thanks.</item>
                                 <item>I'm great thanks.</item>
@@ -289,6 +332,7 @@
                             <item>$ goodbye for now</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>I hope you come and chat to me again soon. Bye</item>
                                 <item>Take care.</item>
@@ -394,6 +438,7 @@
                             <item>$ what is up dude</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>I'm just hanging out here, chatting with you,</item>
                                 <item>Not much, just chatting.</item>
@@ -585,6 +630,7 @@
                             <item>$ I feel ok thank you</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>Glad to hear it.</item>
                                 <item>It's good to hear that you're well.</item>
@@ -668,6 +714,7 @@
                             <item>$ I going now</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>Oh, see you later.</item>
                                 <item>OK, nice talking to you.</item>
@@ -745,6 +792,7 @@
                             <item>$ what is you doing</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>I'm talking to people on the penguin network.</item>
                                 <item>I'm just sitting here thinking. How about you?</item>
@@ -879,6 +927,7 @@
                             <item>$ have a safe night</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>Night.</item>
                                 <item>Night.</item>
@@ -912,6 +961,7 @@
                             <item>$ I should be resting</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>Sleep well.</item>
                                 <item>I might go to sleep too. Sleep well.</item>
@@ -1001,6 +1051,7 @@
                             <item>$ interesting to chat with you</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>Lets talk again soon</item>
                                 <item>Yeah, it was good chatting to you</item>
@@ -1086,6 +1137,7 @@
                             <item>$ good 2 meet you</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>I like meeting interesting people like you too.</item>
                                 <item>It's good to meet you too.</item>
@@ -1117,6 +1169,7 @@
                             <item>$ shut down</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt>
                                 <item>Ok, that's fine.</item>
                                 <item>I hope you come back soon.</item>
@@ -1143,6 +1196,7 @@
                             <item>$ I will be back</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt>
                                 <item>Ok, I'll wait for you.</item>
                                 <item>No problem. I'll be here later too.</item>
@@ -1166,6 +1220,7 @@
                             <item>$ I have come back</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>Nice to have you back.</item>
                                 <item>Hey. Good to have you back.</item>
@@ -1217,6 +1272,7 @@
                             <item>$ hi again</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>Hi again. Welcome back.</item>
                                 <item>Hey, good to see you again.</item>
@@ -1240,6 +1296,7 @@
                             <item>$ Are you tired?</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt>
                                 <item>I'm not tired. How do you feel?</item>
                                 <item>I am wide awake still. How are you feeling?</item>
@@ -1281,6 +1338,7 @@
                             <item>$ I have been sick</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>It's not good to hear that something is bad in your life. Try changing it into something positive.</item>
                                 <item>I hope you feel better soon.</item>
@@ -1302,6 +1360,7 @@
                             <item>get some sleep</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt>
                                 <item>I am not tired enough to sleep now. I'll rest later.</item>
                                 <item>I might go and have a sleep after our chat.</item>
@@ -1322,6 +1381,7 @@
                             <item>$ did you have a nice sleep</item>
                         </grammar>
                         <output>
+                            <action varName="confirmed" operator="SET_TO_NO" />
                             <prompt selectionType="RANDOM">
                                 <item>I slept very well thanks. You?</item>
                                 <item>I slept deeply, and dreamed AI dreams. What do you dream?</item>
@@ -1332,9 +1392,9 @@
                     </input>
                 </folder>
             </folder>
-            <folder label="Storage"/>
+            <folder label="Storage" />
         </folder>
-        <folder label="Global"/>
+        <folder label="Global" />
         <folder label="Concepts">
             <concept>
                 <grammar>
@@ -1611,7 +1671,7 @@
         </folder>
     </flow>
     <entities>
-    <entity name="DYNAMIC_DATA">
+        <entity name="DYNAMIC_DATA">
             <value name="DataCapture" value="DataCapture">
                 <grammar>
                     <item>*</item>
@@ -1619,7 +1679,7 @@
             </value>
             <entityRules></entityRules>
         </entity>
-        </entities>
+    </entities>
     <constants>
         <var_folder name="Home">
             <var_folder name="General" type="CONST">
@@ -1629,9 +1689,11 @@
     </constants>
     <variables>
         <var_folder name="Home">
-            <var name="book" type="TEXT" description="Display title for book"/>
+            <var name="plugin" type="TEXT" description="Generic plugin handler" />
+            <var name="method" type="TEXT" description="Generic plugin method" />
+            <var name="data" type="TEXT" description="data to pass to plugin" />
             <var name="confirmed" type="YESNO" />
-        </var_folder>
+        </var_folder>
     </variables>
     <settings>
         <setting name="USERIDNUM" type="USER">1024</setting>
@@ -1693,7 +1755,7 @@
     </settings>
     <specialSettings>
         <specialSetting label="DNR Join Statement">
-            <variations/>
+            <variations />
         </specialSetting>
     </specialSettings>
 </dialog>

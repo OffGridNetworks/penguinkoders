@@ -18,7 +18,7 @@
   // Establish a reference to the `window` object, and save the previous value
   // of the `Firechat` variable.
   var root = this,
-      previousFirechat = root.Firechat;
+      previousFirechat = root.Firechat;  
 
   function Firechat(firebaseRef, options) {
 
@@ -67,7 +67,15 @@
   };
 
   // Export the Firechat object as a global.
-  root.Firechat = Firechat;
+  if (typeof exports !== 'undefined') {
+      if (typeof module !== 'undefined' && module.exports) {
+          exports = module.exports = Firechat
+      }
+      exports.Firechat = Firechat
+  }
+  else {
+      root.Firechat = Firechat
+  }
 
   // Firechat Internal Methods
   // --------------
@@ -640,3 +648,4 @@
     }
   };
 })(Firebase);
+

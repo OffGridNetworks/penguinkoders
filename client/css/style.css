@@ -1121,6 +1121,14 @@ pre[class*=" language-"] {
     visibility: visible;
     display: table;
     width: 100%; }
+    .chat-box--message-title
+    {
+         font-size: 0.8em;
+    }
+    .chat-box--message-text
+    {
+         font-size: 1em;
+    }
     .chat-box--item_PENGUIN {
       background-color: #ececec; }
       .chat-box--item_PENGUIN > * {
@@ -1477,4 +1485,8 @@ pre[class*=" language-"] {
 #profile-panel .base--textarea {
   font-family: 'courier', monospace; 
     color: #C7C7C7;
+}
+
+#help-panel .base--textarea {
+  font-size: 0.9em;
 }

@@ -26,20 +26,21 @@ var ChatApp = function ChatApp(delegate, done) {
 	this.urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
     this.pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
     this.ready = done;
+    this._penguinUserId = null;
+    this._penguinRoomId = null;
     
-      this.maxLengthUsername = 15;
+    this.maxLengthUsername = 15;
     this.maxLengthUsernameDisplay = 15;
     this.maxLengthRoomName = 24;
     this.maxLengthMessage = 120;
     this.maxUserSearchResults = 100;
-
     
-   var self = this; 
-   chatRef.authAnonymously(function (error, authData) {
+   
+    var self = this;
+    chatRef.authAnonymously(function (error, authData) {
         if (error) {
             console.log("Login Failed!", error);
         } else {
-            console.log("Authenticated successfully with payload:", authData);
             self._chat.setUser(authData.uid, "Alex", function (user) {
 
                 self._user = user;
@@ -47,11 +48,27 @@ var ChatApp = function ChatApp(delegate, done) {
                 self._chat.on('room-enter', self._onEnterRoom.bind(self));
                 self._chat.on('message-add', self._onNewMessage.bind(self));
                 self._chat.on('message-remove', self._onRemoveMessage.bind(self));
-
+                console.log("Connecting to Penguin Channel");
+                  
+                $.get('/chat-getpenguin', { "user": self._user.id })
+                    .done(function (penguin) {
+                        console.log("Identified Penguin Channel");
+                        if ((penguin) && (penguin.name == "Penguin")) {
+                            self._penguinUserId = penguin.user;
+                            self._penguinRoomId = penguin.id;
+                            self._chat.enterRoom(penguin.id)
+                        }
+                    }).fail(function (error) {
+                        error = error.responseJSON ? error.responseJSON.error : error.statusText;
+                        console.log('error:', error);
+                    });
             });
         }
     });
- };
+};
+
+Object.defineProperty(ChatApp.prototype, "userid", {get: function() { return this._user.id; } });
+Object.defineProperty(ChatApp.prototype, "roomid", {get: function() { return this._roomId; } });
 
 ChatApp.prototype.trimWithEllipsis = function (str, length) {
     str = str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
@@ -66,7 +83,6 @@ ChatApp.prototype.sortListLexicographically = function (selector) {
     }).appendTo(selector);
 };
 
-
 ChatApp.prototype._onEnterRoom = function(room) {
     setTimeout(function(){
      var element = $('.chat-box--pane');
@@ -76,23 +92,32 @@ ChatApp.prototype._onEnterRoom = function(room) {
     },500);
 };
   
-ChatApp.prototype._onNewMessage = function (roomId, message) {
-    console.log("message received" + roomId + " " + message.id + message.message || '');
-    var userId = message.userId;
+ChatApp.prototype._onNewMessage = function (roomId, rawMessage) {
+    if (roomId == this._penguinRoomId)
+    {
+        console.log(rawMessage.message);
+        
+        if (rawMessage.message.userid != this._user.id)
+             return;
+        
+        rawMessage.isPenguin = true;
+    } else
+       rawMessage.isPenguin = false;
+    
+    console.log("message received" + roomId + " " + rawMessage.id + rawMessage.message || '');
+    var userId = rawMessage.userId;
     if (!this._user || !this._user.muted || !this._user.muted[userId]) {
-        this._processMessage(roomId, message);
+        this._processMessage(roomId, rawMessage);
     }
 };
 
 ChatApp.prototype._onRemoveMessage = function (roomId, messageId) {
         console.log("message remove" + roomId + " " + messageId);
-
       $('.chat-box--item[data-message-id="' + messageId + '"]').remove()
 };
 
 ChatApp.prototype.sendMessage = function (msg, cb) {
        console.log("message sent" + this._roomId + " " + msg);
- 
     this._chat.sendMessage(this._roomId, msg, 'default', cb);
 };
 
@@ -109,19 +134,26 @@ ChatApp.prototype.hashCode = function(str){
 
 ChatApp.prototype._processMessage = function(roomId, rawMessage) {
     var self = this;
-
+    var origin;
+    if (rawMessage.isPenguin)
+        origin = "PENGUIN"
+    else
+        origin = (this._user && rawMessage.userId == this._user.id) ? "YOU" : "PEER";
+    
     // Setup defaults
     var message = {
       id              : rawMessage.id,
       localtime       : self.formatTime(rawMessage.timestamp),
-      message         : rawMessage.message || '',
+      message         : (rawMessage.isPenguin) ? rawMessage.message.body : rawMessage.message || '',
       userId          : rawMessage.userId,
       name            : rawMessage.name,
-      origin          : (this._user && rawMessage.userId == this._user.id) ? "YOU" : "PEER",
+      origin          : origin,
       type            : rawMessage.type || 'default',
       disableActions  : (!self._user || rawMessage.userId == self._user.id)
     };
     
+    if (!rawMessage.isPenguin)
+    {
        if (message.name.substring(0,1) == '@')
             {
                 message.avatar = message.name.substring(1,2);
@@ -132,7 +164,10 @@ ChatApp.prototype._processMessage = function(roomId, rawMessage) {
                 console.log(s);
                 message.avatar = s.substr(s.length-2);
             }
+    }
   
+   if (!rawMessage.isPenguin){
+       
     message.message = _.map(message.message.split(' '), function(token) {
       if (self.urlPattern.test(token) || self.pseudoUrlPattern.test(token)) {
         return self.linkify(encodeURI(token));
@@ -142,8 +177,9 @@ ChatApp.prototype._processMessage = function(roomId, rawMessage) {
     }).join(' ');
     
     message.message = self.trimWithEllipsis(message.message, self.maxLengthMessage);
+   }
     
-    this._callback(message.origin, message.avatar, message.id, message.name + ":<br />" + message.message);
+    this._callback(message);
 }
 
 ChatApp.prototype.formatTime = function(timestamp) {

@@ -39,7 +39,8 @@
     "csv-parse": "^1.0.1",
     "errorhandler": "~1.4.1",
     "express": "~4.13.3",
+    "firebase": "^2.4.1",
     "request": "^2.69.0",
-     "watson-developer-cloud": "~1.0.6"
+    "watson-developer-cloud": "~1.0.6"
   }
 }

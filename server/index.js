@@ -23,7 +23,8 @@ var express  = require('express'),
   extend     = require('util')._extend,
   errorCatchAll = require('./util/error-handler.js'),
   errorhandler = require('errorhandler'),
-  bodyParser   = require('body-parser')
+  bodyParser   = require('body-parser'),
+  PenguinChat = require('./core-chat')
   
 var app = express();
   
@@ -32,23 +33,19 @@ var app = express();
   app.use(bodyParser.json());
   app.use(express.static(__dirname + '/../client'));
   
-// Bootstrap PenguinDialog
+// Bootstrap PenguinDialog API
 var dialog = require('./core-dialog')(app, credentials["dialog"])
+  
+// Bootstrap PenguinChat Channel
+app.penguinchat = new PenguinChat(app, credentials["dialog"])
 
-// Load Penguin Plugins
+// Load Custom Penguin Plugins
 var pluginsMetaData = require('../penguin.json').plugins;
-
-var pluginModules = [];
+app.penguinhandler = {};
 pluginsMetaData.forEach(function(plugin){
-   var pluginModule = require(plugin.main);
-   if (app, credentials[plugin.name])
-   {
-         pluginModules.push(pluginModule);
-         console.log("loaded penguin plugin " + plugin.name + " by " + plugin.supplier);
-   } else
-   { 
-       console.error("error loading penguin plugin " + plugin.name + " by " + plugin.supplier)
-   }
+    var pluginHandler = require(plugin.main);
+    app.penguinhandler[plugin.name] = pluginHandler(app, credentials[plugin.name]);
+    console.log("loaded penguin plugin " + plugin.name + " by " + plugin.supplier);
 });
 
 // Load error handlers

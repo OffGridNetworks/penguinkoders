@@ -15,36 +15,47 @@
  */
 
 var books = require('./gitenberg.js'),
-  WatsonInsights = require('./watson-insights.js'),
-  WatsonLanguage = require('./watson-language.js')
+    WatsonInsights = require('./watson-insights.js'),
+    WatsonLanguage = require('./watson-language.js')
 
 var penguinPlugin = function (app, credentials) {
+    var insights = new WatsonInsights(credentials["concept-insights"]);
+    var language = new WatsonLanguage(credentials["alchemy-language"]);
 
-  var insights = new WatsonInsights(credentials["concept-insights"]);
-  var language = new WatsonLanguage(credentials["alchemy-language"]);
+    return function langugeInsightsPlugin(context, method, data) {
 
-    app.post('/language-insights-sentiments', function (req, res, next) {
-        var book = books[req.body.book.toLowerCase()];
+        var book;
+        switch (method) {
+            case "analyze-book":
+                book = books[data.toLowerCase()];
 
-        if (book) {
-            language.lookup(req, res, next, book.baseurl + book.text_files[0]);
+                if (book)
+                    language.lookup(app, context, 'book', data, book.baseurl + book.text_files[0]);
+                else
+                    app.penguinchat.sendMessage("I didn't find " + data + " in the Gutenberg repository;  perhaps it is spelled differently?", context.userid);
+                break;
+            case "analyze-url":
+                var src = context.input.toLowerCase();
+                var url = src.substr(src.indexOf('http'));
+                language.lookup(app, context, 'page', url, url);
+                       break;
+            case "analyze-concepts":
+                book = books[data.toLowerCase()];
+
+                if (book)
+                    insights.lookup(app, context, data, book.baseurl + book.text_files[0]);
+                else
+                    app.penguinchat.sendMessage("I didn't find  " + data + " in the Gutenberg repository;  perhaps it is spelled differently?", context.userid);
+                break;
+            case "analyze-videos":
+                if (data.length > 0)
+                   insights.videos(app, context, data);
+                else
+                    app.penguinchat.sendMessage("I didn't find any additional meaningful concepts in the work", context.userid);
+            default:
+                break
         }
-        else
-            res.json({ success: false });
-    });
-
-    app.post('/language-insights-concepts', function (req, res, next) {
-        var book = books[req.body.book.toLowerCase()];
-
-        if (book) {
-            insights.lookup(req, res, next, book.baseurl + book.text_files[0]);
-        }
-        else
-            res.json({ success: false });
-    });
-
-    app.get('/language-insights-ted', function (req, res, next) {
-        return insights.videos(req, res, next);
-    });
-
+    }
 }
+
+module.exports = penguinPlugin;
