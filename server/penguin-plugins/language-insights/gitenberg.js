@@ -23,7 +23,7 @@ var c = 0;
 var tab = '\t';
 var base = 'https://raw.githubusercontent.com/gitenberg/';
 
-fs.createReadStream(path.join(__dirname, 'gitenberg.tsv')).pipe(CSVParser({
+fs.createReadStream(path.join(__dirname, 'resources/gitenberg.tsv')).pipe(CSVParser({
     delimiter: tab, relax: true, 
     columns: ['id', 'gitb_id', 'gitb_name', 'title', 'language', 'downloads', 'text_files']
 }, function (err, data) {

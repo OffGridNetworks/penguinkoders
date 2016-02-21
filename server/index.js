@@ -1,6 +1,5 @@
 /**
  * Copyright 2016 OffGrid Penguins
- * Portions Copyright 2015 IBM Corp. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,61 +16,46 @@
 
 'use strict';
 
-var books = require('./resources/gitenberg.js');
-
 var express  = require('express'),
-  app        = express(),
   fs         = require('fs'),
   path       = require('path'),
-  credentials    = require('../config/bluemix.json'),
+  credentials    = require('../config/credentials.json'),
   extend     = require('util')._extend,
-  watson     = require('watson-developer-cloud'),
-  errorhandlerLocal = require('./error-handler.js'),
+  errorCatchAll = require('./util/error-handler.js'),
   errorhandler = require('errorhandler'),
-  bodyParser   = require('body-parser'),
-  watsonDialog = require('./watson-dialog.js'),
-  WatsonInsights = require('./watson-insights.js'),
-  WatsonLanguage = require('./watson-language.js')
+  bodyParser   = require('body-parser')
+  
+var app = express();
   
 // Bootstrap express
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
   app.use(express.static(__dirname + '/../client'));
-
-  watsonDialog(app, credentials.dialog);
-  var insights = new WatsonInsights(credentials["concept-insights"]);
-  var language = new WatsonLanguage(credentials["alchemy-language"]);
-
-app.post('/book1', function(req, res, next) {
-  var book = books[req.body.book.toLowerCase()];
   
-  if (book)
-  {
-      language.lookup(req, res, next, book.baseurl + book.text_files[0]);
-  }
-  else  
-     res.json({success: false});
-});
+// Bootstrap PenguinDialog
+var dialog = require('./core-dialog')(app, credentials["dialog"])
 
-app.post('/book2', function(req, res, next) {
-  var book = books[req.body.book.toLowerCase()];
-  
-  if (book)
-  {
-     insights.lookup(req, res, next, book.baseurl + book.text_files[0]);
+// Load Penguin Plugins
+var pluginsMetaData = require('../penguin.json').plugins;
+
+var pluginModules = [];
+pluginsMetaData.forEach(function(plugin){
+   var pluginModule = require(plugin.main);
+   if (app, credentials[plugin.name])
+   {
+         pluginModules.push(pluginModule);
+         console.log("loaded penguin plugin " + plugin.name + " by " + plugin.supplier);
+   } else
+   { 
+       console.error("error loading penguin plugin " + plugin.name + " by " + plugin.supplier)
    }
-  else  
-     res.json({success: false});
 });
 
-app.get('/ted', function(req, res, next) {
-   return  insights.videos(req, res, next);
-});
-
-// error-handler settings
+// Load error handlers
+errorCatchAll(app);
 app.use(errorhandler());
-errorhandlerLocal(app);
 
+// Start server
 var port = process.env.PORT || 3000;
 app.listen(port);
 console.log('listening at:', port);

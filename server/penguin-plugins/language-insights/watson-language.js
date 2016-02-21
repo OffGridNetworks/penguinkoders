@@ -25,7 +25,6 @@ var Language = function (credentials) {
     this.credentials = credentials;
     
     this.alchemy_language = watson.alchemy_language(this.credentials);
-    
 };
 
 Language.prototype.lookup = function (req, res, next, url) {

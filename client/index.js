@@ -25,76 +25,74 @@ $(document).ready(function () {
         $information = $('.data--information'),
         $profile = $('.data--profile'),
         $loading = $('.loader');
-   
+
     $chatInput.keyup(function (event) {
         if (event.keyCode === 13) {
             converse($(this).val());
         }
     });
 
-    var converse = function (userText) {      
+    var converse = function (userText) {
         if (userText !== "penguin")
-          $loading.show();
-             
-           if (!userText.toLowerCase().startsWith("penguin"))
-         {
-            chatApp.sendMessage(userText, function (){
-                 $loading.hide();
-                 clearInput();
-            });
-         }
-         else 
-         {
-             
-               // check if the user typed text or not
-        if (typeof (userText) !== 'undefined' && $.trim(userText) !== '')
-            submitMessage(userText);
-       
-        // build the conversation parameters
-        var params = { input: userText };
+            $loading.show();
 
-        // check if there is a conversation in place and continue that
-        // by specifing the conversation_id and client_id
-        if (conversation_id) {
-            params.conversation_id = conversation_id;
-            params.client_id = client_id;
-        }
-
-        $.post('/conversation', params)
-            .done(function onSucess(dialog) {
-                $chatInput.val(''); // clear the text input
-
-                // update conversation variables
-                conversation_id = dialog.conversation.conversation_id;
-                client_id = dialog.conversation.client_id;
-
-                var texts = dialog.conversation.response;
-                var response = texts.join('&lt;br/&gt;'); // &lt;br/&gt; is <br/>
-
-                $chatInput.show();
-                $chatInput[0].focus();
-
-                $information.empty();
-
-                addProperty($information, 'Dialog ID: ', dialog.dialog_id);
-                addProperty($information, 'Conversation ID: ', conversation_id);
-                addProperty($information, 'Client ID: ', client_id);
-
-                talk('PENGUIN', null, null, response); // show
-
-                getProfile();
-                console.log(dialog);
-       
-            })
-            .fail(function (error) {
-                talk('PENGUIN', null, null, error.responseJSON ? error.responseJSON.error : error.statusText);
-            })
-            .always(function always() {
+        if (!userText.toLowerCase().startsWith("penguin")) {
+            chatApp.sendMessage(userText, function () {
                 $loading.hide();
-                scrollChatToBottom();
-                $chatInput.focus();
+                clearInput();
             });
-         }
+        }
+        else {
+             
+            // check if the user typed text or not
+            if (typeof (userText) !== 'undefined' && $.trim(userText) !== '')
+                submitMessage(userText);
+       
+            // build the conversation parameters
+            var params = { input: userText };
+
+            // check if there is a conversation in place and continue that
+            // by specifing the conversation_id and client_id
+            if (conversation_id) {
+                params.conversation_id = conversation_id;
+                params.client_id = client_id;
+            }
+
+            $.post('/dialog-conversation', params)
+                .done(function onSucess(dialog) {
+                    $chatInput.val(''); // clear the text input
+
+                    // update conversation variables
+                    conversation_id = dialog.conversation.conversation_id;
+                    client_id = dialog.conversation.client_id;
+
+                    var texts = dialog.conversation.response;
+                    var response = texts.join('&lt;br/&gt;'); // &lt;br/&gt; is <br/>
+
+                    $chatInput.show();
+                    $chatInput[0].focus();
+
+                    $information.empty();
+
+                    addProperty($information, 'Dialog ID: ', dialog.dialog_id);
+                    addProperty($information, 'Conversation ID: ', conversation_id);
+                    addProperty($information, 'Client ID: ', client_id);
+
+                    talk('PENGUIN', null, null, response); // show
+
+                    getProfile();
+                    console.log(dialog);
+
+                })
+                .fail(function (error) {
+                    talk('PENGUIN', null, null, error.responseJSON ? error.responseJSON.error : error.statusText);
+                })
+                .always(function always() {
+                    $loading.hide();
+                    scrollChatToBottom();
+                    $chatInput.focus();
+                });
+        }
 
     };
 
@@ -103,27 +101,26 @@ $(document).ready(function () {
             conversation_id: conversation_id,
             client_id: client_id
         };
-	     
-        $.post('/profile', params).done(function (data) {
+
+        $.post('/dialog-profile', params).done(function (data) {
             $profile.empty();
             var result = {};
             data.name_values.forEach(function (par) {
-                
-                if (par.value !== '')
-                {
+
+                if (par.value !== '') {
                     result[par.name] = par.value;
                     addProperty($profile, par.name + ':', par.value);
                 }
                 if (result.confirmed == "Yes" && result.book != '')
-                  getBook(result.book);
+                    getBook(result.book);
             });
         }).fail(function (error) {
             talk('PENGUIN', null, null, error.responseJSON ? error.responseJSON.error : error.statusText);
         });
     };
-    
-    
-    
+
+
+
     var getBook = function (book) {
         var params = {
             book: book,
@@ -131,7 +128,7 @@ $(document).ready(function () {
             conversation_id: conversation_id
         };
         $loading.show();
-        $.post('/book1', params).done(function (results) {
+        $.post('/language-insights-sentiments', params).done(function (results) {
             console.log(results);
 
             var positives = [];
@@ -148,8 +145,8 @@ $(document).ready(function () {
                     }
                 }
                 for (var i = 0; i < results.entities.length; i++) {
-                     var name = results.entities[i].text + "[" + results.entities[i].type + "]";
-                  if (check_duplicate_concept(negatives, name) || (results.entities[i].sentiment.type != "negative") || negatives.length == 3)
+                    var name = results.entities[i].text + "[" + results.entities[i].type + "]";
+                    if (check_duplicate_concept(negatives, name) || (results.entities[i].sentiment.type != "negative") || negatives.length == 3)
                         continue;
                     else {
                         negatives.push(name);
@@ -163,7 +160,7 @@ $(document).ready(function () {
             talk('PENGUIN', null, null, "The book " + book + " is negative towards " + negatives.join(", and "));
             scrollChatToBottom();
 
-            $.post('/book2', params).done(function (results) {
+            $.post('/language-insights-concepts', params).done(function (results) {
                 console.log(results);
 
                 var unique_concept_array = [];
@@ -179,7 +176,7 @@ $(document).ready(function () {
                         }
                     };
 
-                  $.get('/ted', {
+                    $.get('/language-insights-ted', {
                         ids: unique_concept_array,
                         limit: 3,
                         document_fields: JSON.stringify({
@@ -205,23 +202,23 @@ $(document).ready(function () {
         });
     };
 
-  var generate_TED_panel = function(TED_data) {
-           talk('PENGUIN', null, null, "I am " + Math.floor(TED_data.score * 100) + "% confident that a relevant TED talk is " + TED_data.user_fields.title + " by " + TED_data.user_fields.speaker);
-              scrollChatToBottom();
+    var generate_TED_panel = function (TED_data) {
+        talk('PENGUIN', null, null, "I am " + Math.floor(TED_data.score * 100) + "% confident that a relevant TED talk is " + TED_data.user_fields.title + " by " + TED_data.user_fields.speaker);
+        scrollChatToBottom();
 
-  }
+    }
 
 
 
-   var check_duplicate_concept= function(unique_concept_array, concept) {
-       
-       for (var i = 0; i < unique_concept_array.length; i++) {
-           if (unique_concept_array[i] == concept)
-               return true;
-       }
+    var check_duplicate_concept = function (unique_concept_array, concept) {
 
-       return false;
-   }
+        for (var i = 0; i < unique_concept_array.length; i++) {
+            if (unique_concept_array[i] == concept)
+                return true;
+        }
+
+        return false;
+    }
 
     var scrollChatToBottom = function () {
         var element = $('.chat-box--pane');
@@ -243,14 +240,14 @@ $(document).ready(function () {
         $chatBox.find('p').html($('<p/>').html(text).text());
         $chatBox.attr('data-message-id', messageId);
         if (avatar !== null)
-          $chatBox.find("img").eq(0).attr("src","images/icons/avatar-peer" + avatar + ".svg");
-      
+            $chatBox.find("img").eq(0).attr("src", "images/icons/avatar-peer" + avatar + ".svg");
+
         $chatBox.insertBefore($loading);
         setTimeout(function () {
             $chatBox.removeClass('chat-box--item_HIDDEN');
         }, 100);
         if (!messageId)
-             $loading.hide();
+            $loading.hide();
 
     };
 
@@ -289,7 +286,5 @@ $(document).ready(function () {
     // Initialize the conversation
 
     scrollToInput();
-    var chatApp = new ChatApp(talk, function() {$loading.hide();     converse('penguin');});
-    
-    
+    var chatApp = new ChatApp(talk, function () { $loading.hide(); converse('penguin'); });
 });

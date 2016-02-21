@@ -1,0 +1,60 @@
+<!--
+/**
+ * Copyright 2016 OffGrid Penguins
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+<input>
+    <grammar>
+        <item>Preliminaries</item>
+        <item>$ what do you know</item>
+        <item>$ what can you do</item>
+        <item>$ what can I do</item>
+        <item>$ what can you tell</item>
+        <item>$ what kind of</item>
+        <item>$ what else do you know</item>
+        <item>$ what do you have information</item>
+        <item>$ do you know</item>
+        <item>$ do you have information</item>
+        <item>$ can I</item>
+        <item>$ Do you have *</item>
+        <item>$ What * do you have</item>
+        <item>$ Which * do you have</item>
+        <item>$ What titles * do you have</item>
+        <item>$ What do you know about</item>
+    </grammar>
+    <output>
+        <prompt selectionType="RANDOM">
+            <item>I have access to all the books in the Gutenburg collection.</item>
+        </prompt>
+    </output>
+</input>
+<input>
+    <grammar>
+        <item>$ a book report on (DYNAMIC_DATA)={book}</item>
+        <item>$ tell me about (DYNAMIC_DATA)={book}</item>
+        <item>$ Tell me about (DYNAMIC_DATA)={book}</item>
+        <item>$ What do you know about (DYNAMIC_DATA)={book}</item>
+        <item>$ What the main themes in (DYNAMIC_DATA)={book}</item>
+        <item>I'd like to do a book report on (DYNAMIC_DATA)={book}</item>
+        <item>Do you have (DYNAMIC_DATA)={book}</item>
+    </grammar>
+    <action varName="book" operator="SET_TO">{book.source}</action>
+    <action varName="confirmed" operator="SET_TO_YES" />
+    <output>
+        <prompt selectionType="RANDOM">
+            <item>Ok, checking my sources for {book}</item>
+        </prompt>
+    </output>
+</input>

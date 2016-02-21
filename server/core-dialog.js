@@ -20,9 +20,10 @@ var path = require('path'),
   extend = require('util')._extend,
   fs = require('fs')
  
-module.exports = function (app, credentials) {
+var Dialog = function (app, credentials) {
 
-    //Setup Watson Dialog
+    //Setup Predefined Watson Dialog Flow
+    //To edit the flow, change the dialog.xml file in each plugin directory and incorporate into penguin.xml in root dialogs directory
     var dialog_id_in_json = (function () {
         try {
             var dialogsFile = path.join(path.dirname(__filename), '../dialogs', 'dialog-id.json');
@@ -37,7 +38,7 @@ module.exports = function (app, credentials) {
 
     var dialog = watson.dialog(credentials);
 
-    app.post('/conversation', function (req, res, next) {
+    app.post('/dialog-conversation', function (req, res, next) {
         var params = extend({ dialog_id: dialog_id }, req.body);
         dialog.conversation(params, function (err, results) {
             if (err)
@@ -47,7 +48,7 @@ module.exports = function (app, credentials) {
         });
     });
 
-    app.post('/profile', function (req, res, next) {
+    app.post('/dialog-profile', function (req, res, next) {
         var params = extend({ dialog_id: dialog_id }, req.body);
         dialog.getProfile(params, function (err, results) {
             console.log(results);
@@ -57,7 +58,6 @@ module.exports = function (app, credentials) {
                 res.json(results);
         });
     });
-    
-    
-
 };
+
+module.exports = Dialog;

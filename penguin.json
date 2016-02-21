@@ -1,0 +1,19 @@
+{
+    "about": "this file is used to define the available plugins for the Penguin Network.  Each plugin gives the penguin more apparent (and real) intelligence, and can be supplied by third parties on a subscription model",
+    "plugins": [
+        {
+            "name": "language-insights",
+            "supplier": "OffGridPenguins",
+            "main": "./penguin-plugins/language-insights/index.js",
+            "dialog": "./penguin-plugins/language-insights/dialog.xml",
+            "subscriptionplan": "free",
+            "copyright": "Copyright (c) 2016 OffGrid Penguins. All rights reserved.",
+            "license": "Apache-2.0",
+            "description": "the language-insights module provides access to 43,000 texts of great literature as well as any arcticle on the Internet.  The penguin access each text on demand, reads it a couple of times from different perspectives, compares it to online talks by contemporary luminaries, and thus becomes smarter with each question it answers;  it provides a few key insights not to miss about the text.  It puts the power of an IBM super-computer in the hands of an 8 year old, and accesses Koder, IBM, GitHub, Firebase and Google servers in so doing",
+            "suggestedquestions": [
+                "penguin, tell me about A Tale of Two Cities",
+                "penguin, please do a book report on Play the Game"
+            ]
+        }
+    ]
+}
