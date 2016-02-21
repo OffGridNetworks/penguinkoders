@@ -63,7 +63,7 @@ Language.prototype.lookup = function (app, context, itemType, book, url) {
 
             app.penguinchat.sendMessage("The " + itemType + " " + book + " is positive towards " + positives.join(", and "), context.userid);
             app.penguinchat.sendMessage("The " + itemType + " " + book + " is negative towards " + negatives.join(", and "), context.userid); 
-            if (!(book.startsWith('http'))
+            if (!(book.startsWith('http')))
               app.penguinhandler["language-insights"](context, "analyze-concepts", book);           
         }
     });
