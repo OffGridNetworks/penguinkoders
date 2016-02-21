@@ -24,7 +24,8 @@ var express  = require('express'),
   errorCatchAll = require('./util/error-handler.js'),
   errorhandler = require('errorhandler'),
   bodyParser   = require('body-parser'),
-  PenguinChat = require('./core-chat')
+  PenguinChat = require('./core-chat'),
+  shim = require('./util/startswith.js')
   
 var app = express();
   
