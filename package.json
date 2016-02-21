@@ -40,7 +40,6 @@
     "errorhandler": "~1.4.1",
     "express": "~4.13.3",
     "request": "^2.69.0",
-    "sqlite3": "^3.1.1",
-    "watson-developer-cloud": "~1.0.6"
+     "watson-developer-cloud": "~1.0.6"
   }
 }
