@@ -169,9 +169,13 @@ $(document).ready(function () {
     });
 
     // Initialize the conversation
-
+    var runonce = false;
     scrollToInput();
     var chatApp = new ChatApp(talkCallback, function () { $loading.hide(); 
-  	converse('penguin');
+    if (!runonce) {
+        	converse('penguin');
+            runonce = true;
+    }
+  
      });
 });
