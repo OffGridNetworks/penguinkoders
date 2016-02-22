@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>the penguin</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<header class="_demo--heading">
+	<div class="_demo--container">
+		<a class="wordmark" href="https://penguin.offgridn.com/">
+			<span class="wordmark--left">OffGrid</span>
+			<span class="wordmark--right">Penguins</span>
+		</a>
+		<nav class="heading-nav">
+	       <a class="heading-nav--item" href="parents.html">
+				Parents
+			</a>
+		</nav>
+	</div>
+</header>
+	<div class="_demo--banner">
+	<div class="_demo--container">
+		<div class="banner--service-icon-container">
+			<img class="banner--service-icon" src="images/icons/dialog.svg" alt="Penguin Icon">
+		</div>
+		<div class="banner--service-info">
+			<h1 class="banner--service-title base--h1">
+				<img class="banner--service-icon_INLINE" src="images/icons/dialog.svg" alt="Penguin Icon">
+				Penguin Network
+			</h1>
+			<div class="banner--service-description">Penguin Network is a homework helper and closed community for the under 13s.</div>
+			<div class="banner--service-resource">
+				<span class="icon icon-link"></span>
+				<strong>Resources to help you judge this application:</strong>
+			</div>
+			<div class="banner--service-links">
+				<li class="base--li banner--service-link-item">
+					<a href="index.html" class="base--a">Home</a>
+				</li>
+				<li class="base--li banner--service-link-item">
+					<a href="team.html" class="base--a">Team</a>
+				</li>
+				<li class="base--li banner--service-link-item">
+					<a href="roadmap.html" class="base--a">Roadmap</a>
+				</li>
+				<li class="base--li banner--service-link-item">
+					<a href="https://github.com/OffGridNetworks/penguinkoders" class="base--a">Source code</a>
+				</li>
+			</div>
+		</div>
+	</div>
+</div>
+	<div class="_demo--container">
+	<article class="_demo--content base--article">
+		<h1>About this hackathon project</h1>
+        This is a hackathon project that was started for the Koding.com HackSummit Hackathon on Saturday February 20 and submitted on Sunday February 21.
+        It was designed and created by a family of an 8 year old, a 9 year old and an 11 year old and their father -- a team of four.  
+        <img src="./images/IMG_4488.JPG"align="left" alt="The Team at Work" /><br>
+          
+                <h2>Social Media for Under 13s</h2>
+         The global social media market is $20-$50bn in size, with several billion users, and yet only a small fraction of this is knowingly targeted
+         at under 13s.  The privacy laws by country requiring parental permissions etc. for any sharing of data make this a hastle that few of the 
+         big players have chosen to address.  We've tackled this head on, with only the minimum of features provided with original identity that a user
+         might bring to the network, and then we keep it closed so that.  But that was just where we started.  We really see this as a huge opportunity
+         for cognitive avatars like Penguin who provide help from a composite of different services using a seamless, natural language interface. 
+        <h2>Technology Overview</h2>
+        The application consists of a multi-room community / chat interface that is supported by multiple parallel integrations with one of the most
+        advanced cognitive platforms for natural language processing and machine learning.  It may seem odd to give a 7 year old a chat application
+        that runs on an IBM supercomputer (well our younges team member turned 8 during the competition), but the idea is to provide a pluggable 
+        framework that is designed from the start to allow advanced cognitive functions to be plugged in, and even shared by the users.   The advancement
+        in cognitive algorithm is so profound, its estimated to surpass the cockroach within years, and primates in the lifetime of the younger team members;
+        therefore, rather than build yet another social network, we've created a platform that is a learning platform for algorithms, that start with some
+        useful basics, but will allow both users and machine to evolve together. 
+         <br>
+        The core technology includes:
+        <h5>Evented-IO based on Node.js</h5>
+    An asynchronous, evented back-end based on Node.js
+     <h5>Linux-Caddy-In Memory-FireBase Stack</h5>
+<p>A back end stack of Linux on the provided Softlayer Koding VM, but with Apache2 swapped out for a lighter weight Go lang
+    reverse proxy server, Caddy, that creates SSL certificates on demand (checkout https://penguin.offgridn.com)</p>
+<p>A lightweight front-end web client, with no bulky frameworks, just hand-tailored CSS and streamlined asynchronous communication
+    with the backend.</p>
+<h5>Custom Integration of Two-Way Real Time Asynchronous Protocol using Standard Web Technologies</h5>
+<p>A custom two-way real-time communication protocol of XMLHTTP from client to server (to create a single page app for all but
+    these static about pages) and Firebase running over WebSockets for deferred and event-based communication from server
+    back to front-end. For example when requesting a book report, some data comes back straight away, but as the cognitive
+    engine reads and learns more, it submits additional content over the Firebase channel.</p>
+<h5>Firebase chat</h5>
+<p>>Firebase API was chosen simply for fast productivity for the Hackathon, the eventual aim would be swap this out for an off-line
+    friendly channel that works over school and neighborhood WiFi, and Bluetooth LE etc. for non connected scenarios.</p>
+<h5>Firebase chat</h5>
+<p>A custom set of integrations with IBM Watson Alchemy APIs; the APIs are straightforward, the differentiation here 
+    is simply tying them all together in a robust way that works (even after only 24 hours of development) 
+    in a very exensible model designed in from the outset.  Slack added bots way too late we think, and we are designing in
+    bots and algorithms from the start.  Rather than coded logic for commands and logic flow, we use an XML-started but machine learning
+    approach of Alchemy Dialog, which will eventually allow even end-users to add their own jokes instead of Siri's, have a modern
+    answering machine that actually converses with your "callers" in a style that you'd be proud of etc.  We kept it straight forward for
+    the hackathon to show a complete independent directory including script, plugin penguin.json file layout, and relied on the platform
+    to provide the UI itself, a content-first appraoach.
+    <p>The Watson samples online tend
+    to be client-orchestrated, but we wanted a more balanced approach that allows any algorithm provider to offer their own. 
+    We don't believe in a future of one Siri or one Cortana, but rather one where certain aspects of the cognitive processing
+    are provided by the then prevailing best algorithm of the day. The source code of this hackathon project shows that that
+    a plugin architecture works and actually allowed us to bring in Dialog, Language, and Insights APIs all from Watson,
+    Chat from Firebase, and Content from Github/the Gutenberg project. This wouldn't be possible without a thoughtfully architected
+    approach
+<h5>Horizontally Scalable Cotent Sources</h5>
+<p>Github and the Gutenberg project are used to provide 46,000 works of literature, in a readily indexed form that can be read
+    on demand by the cognitive engine. When you request a "book report", Penguin doesn't just go to its archive, it (re)reads
+    the text, determines the latests concepts and sentiments and provides them back</p>
+<p>TED/Google YouTube: It's hard to explain to a child today what a 100 year old text really means, and so we use Watson's built in corpus for the Ted
+    talks to present similar views articulated by the contemporary thespians of today. Give it "A tale of Two Cities", and
+    Penguin will suggest three Ted talks with stated confidence of its conceptual linkage. Perhaps history does repeat.</p>
+<h5>Standard Express Framework</h5>
+Six other common Node frameworks are used to support the web server; again, nothing special in these choices, just chosen
+    for familiarity by Hackathon judges and battle-tested maturity: async, body-parser, csv-parse, errorhandler express and
+    request.
+<h5>Javascript Code-First Development</h5>
+Development is all in Javascript (front and back end with some shared re-use of code where appropriate), and the tooling
+    we used was Visual Studio Code, with Github and Koding used as the storage repositories. The boys run Windows 10, the
+    father runs OS X.
+   <p>Testing was done by the boys and verified with use of both front and back end debugging tools provided in browser (Chrome and Visual Studio Code).</p>
+    
+    <p>Wireframes were done on flipcharts you can see in the background of our coding room</p>
+         <img src="./images/IMG_4484.JPG"align="left" alt="Wirefames" />
+          <img src="./images/IMG_4485.JPG"align="right" alt="Wirefames" />
+          Note: These pages are not intended to be part of the end application, just to facilitate judging of the application
+	</article>
+</div>
+<div class="penguin-band scene" id="penguin-footer-legal">
+  <div class="penguin-columns">
+    <div class="penguin-col-1-1">
+      <ol>
+        <li><a href="https://twitter.com/hack_summit" target="_blank">A Koder HackSummit Entry</a></li>
+        <li><a href="./privacy.html" target="_blank">Privacy Policy</a></li>
+        <li><a href ="https://github.com/offgridnetworks/penguinkoders" target="_blank">© 2016 OffGrid Penguins</li>
+      </ol>
+    </div>
+  </div>
+</div>
+</body>
+</html>
